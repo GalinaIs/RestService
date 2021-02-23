@@ -1,12 +1,9 @@
 package com.mycompany.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -24,9 +21,8 @@ public class Manager {
     private String patronymic;
     private String phoneNumber;
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "manager_id")
-    @Fetch(value= FetchMode.JOIN)
     Set<Client> clients;
 
     public Manager() {
