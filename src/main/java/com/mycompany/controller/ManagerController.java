@@ -3,42 +3,41 @@ package com.mycompany.controller;
 import com.mycompany.entity.Manager;
 import com.mycompany.entity.exception.ManagerNotFountException;
 import com.mycompany.repository.ManagerRepository;
+import com.mycompany.service.ManagerService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 public class ManagerController {
-    private final ManagerRepository managerRepository;
+    private final ManagerService managerService;
 
-    public ManagerController(ManagerRepository managerRepository) {
-        this.managerRepository = managerRepository;
+    public ManagerController(ManagerService managerService) {
+        this.managerService = managerService;
     }
 
     @GetMapping("/managers")
     public List<Manager> getAllManagers() {
-        return managerRepository.findAll();
+        return managerService.getAllManagers();
     }
 
     @PostMapping("/managers")
     public Manager saveNewManager(@RequestBody Manager manager) {
-        return managerRepository.save(manager);
+        return managerService.saveNewManager(manager);
     }
 
     @GetMapping("/managers/{id}")
     public Manager getManager(@PathVariable Long id) {
-        return managerRepository.findById(id)
-                .orElseThrow(() -> new ManagerNotFountException(id));
+        return managerService.getManager(id);
     }
 
     @PutMapping("/managers/{id}")
     public Manager updateManager(@RequestBody Manager newManager, @PathVariable Long id) {
-        newManager.setId(id);
-        return managerRepository.save(newManager);
+        return managerService.updateManager(newManager, id);
     }
 
     @DeleteMapping("/managers/{id}")
-    void deleteClient(@PathVariable Long id) {
-        managerRepository.deleteById(id);
+    public void deleteClient(@PathVariable Long id) {
+        managerService.deleteClient(id);
     }
 }
