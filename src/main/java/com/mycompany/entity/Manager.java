@@ -4,19 +4,19 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "manager")
+@Entity
 @Data
 public class Manager {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String surname;
     private String name;
     private String patronymic;
     private String phoneNumber;
-    private Long deputyId;
 
     public Manager() {
 
