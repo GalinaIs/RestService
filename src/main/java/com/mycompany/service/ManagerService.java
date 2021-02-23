@@ -1,11 +1,14 @@
 package com.mycompany.service;
 
+import com.mycompany.entity.Client;
 import com.mycompany.entity.Manager;
 import com.mycompany.entity.exception.ManagerNotFountException;
 import com.mycompany.repository.ManagerRepository;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @RestController
 public class ManagerService {
@@ -35,5 +38,10 @@ public class ManagerService {
 
     public void deleteClient(Long id) {
         managerRepository.deleteById(id);
+    }
+
+    public Set<Client> getAllClientsByManagerId(Long id) {
+        Manager manager = getManager(id);
+        return manager.getClients();
     }
 }
