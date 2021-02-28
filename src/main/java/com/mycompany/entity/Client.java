@@ -1,5 +1,7 @@
 package com.mycompany.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.mycompany.serializer.CustomManagerSerializerForClient;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,6 +16,7 @@ public class Client {
     private String address;
     @ManyToOne
     @JoinColumn(name = "manager_id", referencedColumnName = "id")
+    @JsonSerialize(using = CustomManagerSerializerForClient.class)
     private Manager manager;
 
     public Client() {
