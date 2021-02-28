@@ -6,6 +6,7 @@ import com.mycompany.entity.exception.ClientNotFountException;
 import com.mycompany.repository.ClientRepository;
 import com.mycompany.repository.ManagerRepository;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +25,25 @@ import java.util.Set;
 })
 class ManagerServiceTest {
     @Autowired
-    ClientRepository clientRepository;
+    private ClientRepository clientRepository;
     @Autowired
-    ManagerRepository managerRepository;
+    private ManagerRepository managerRepository;
+    private ClientService clientService;
+
+    @Before
+    public void setUp() {
+        this.clientService = new ClientService(clientRepository);
+    }
 
     @Test
     void getAllManagers() {
-        ManagerService managerService = new ManagerService(managerRepository);
+        ManagerService managerService = new ManagerService(managerRepository, clientService);
         Assert.assertEquals(2, managerService.getAllManagers().size());
     }
 
     @Test
     void deleteManager() {
-        ManagerService managerService = new ManagerService(managerRepository);
+        ManagerService managerService = new ManagerService(managerRepository, clientService);
         long managerId = 1L;
         Set<Client> allClientsByManagerId = managerService.getAllClientsByManagerId(managerId);
         Assert.assertFalse(allClientsByManagerId.isEmpty());

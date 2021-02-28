@@ -7,15 +7,16 @@ import com.mycompany.repository.ManagerRepository;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 @RestController
 public class ManagerService {
     private final ManagerRepository managerRepository;
+    private final ClientService clientService;
 
-    public ManagerService(ManagerRepository managerRepository) {
+    public ManagerService(ManagerRepository managerRepository, ClientService clientService) {
         this.managerRepository = managerRepository;
+        this.clientService = clientService;
     }
 
     public List<Manager> getAllManagers() {
@@ -37,6 +38,13 @@ public class ManagerService {
     }
 
     public void deleteClient(Long id) {
+        Manager manager = getManager(id);
+        if (manager.getDeputyId() != null) {
+            manager.getClients().forEach(client -> {
+                client.setManager(manager.getDeputy());
+                clientService.updateClient(client, client.getId());
+            });
+        }
         managerRepository.deleteById(id);
     }
 
